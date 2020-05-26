@@ -1,0 +1,93 @@
+body {
+    font: Montserrat;
+    font-size: 16px;
+    color: #0066FF;
+    background-color: #ADADAD;
+}
+
+.kanban-title {
+    font-size: 36px;
+    font-weight: bold;
+    /* top right bottom left*/
+    padding: 46px 0px 46px 46px;
+    background-color: white;
+    border-bottom: 4px;
+    /* left-right-offset depth spread color */
+    box-shadow: 0px 5px 5px gray;
+}
+
+.swimlane {
+}
+
+.swimlane-header {
+    font-size: 36px;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 62px;
+    width: 368px;
+    box-shadow: 0px 5px 5px gray;
+}
+
+.swimlane-body {
+    height: auto;
+    width: 368px;
+    box-shadow: 0px 5px 5px gray;
+    overflow: scroll;
+    padding-bottom: 65px;
+}
+
+.ticket-card {
+    height:155px;
+    width: 330px;
+    padding: 10px;
+    background-color: #FFFFFF;
+}
+
+.ticket-navigation-left {
+    float: left;
+    background: red;
+    text-align: center;
+}
+.ticket-navigation-right {
+    float: right;
+    background: blue;
+    text-align: center;
+}
+
+.ticket-navigation-left, .ticket-navigation-right {
+    border: 2px solid black;
+    border-radius: 50%;
+    color: black;
+    width: 10%;
+    background-color: orange;
+    padding: 6px 0;
+    margin: 40px 0;
+}
+.ticket-content {
+    position: relative;
+    padding: 10px;
+    text-align: center;
+    width: 69%;
+    height: 100px;
+    margin: 0;
+    background-color:green;
+    float: left;
+}
+.ticket-description{
+    align: center;
+    padding: 0px 10px 10px 10px;
+}
+.ticket-date {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.ticket-author {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.ticket-active {
+    border: 4px Red;

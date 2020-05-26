@@ -1,0 +1,4 @@
+{
+    "Shift": 3,
+    "Loads": "./encrypted_state.txt"
+}
