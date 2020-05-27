@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [clojure.data.json :as json]
+            [java-time :as jt]
             [lightfeathercc.views :as views]
             [lightfeathercc.cipher :as cipher]))
 
@@ -12,13 +13,13 @@
                            :key-fn (fn [k] (keyword (clojure.string/lower-case k))))) ;TODO: fix this with arrow
 
 ; ----- Create datastore and state manipulation functions.
-(def datastore (atom {:next-id 1
+(def datastore (atom {:next-id 0
                       :swimlanes #{:backlog :in-progress :complete}
-                      :tickets [{:id "ticket-0"
-                                 :description "description"
-                                 :date (str (java.time.LocalDateTime/now))
-                                 :author "Alexander Maricich"
-                                 :swimlane :backlog}]}))
+                      :tickets []}))
+
+(defn current-time []
+  (let [t (jt/local-date)]
+    (jt/format "yyyy/MM/dd" t)))
 
 (defn save-state []
   "Writes out the current state to a file."
@@ -34,7 +35,13 @@
   (if (.exists (clojure.java.io/as-file (:loads config)))
     (let [encoded-state (slurp (:loads config))
           state-str (cipher/decode encoded-state (:shift config))
-          state (json/read-str state-str :key-fn keyword)]
+          state (json/read-str
+                   state-str
+                   :key-fn keyword
+                   :value-fn (fn [k v]
+                                 (if (= :swimlane k)
+                                     (keyword v)
+                                     v)))]
       (reset! datastore state))
     (save-state)))
 
@@ -70,9 +77,30 @@
       (swap! datastore assoc-in [:tickets index :swimlane] swimlane)
       (throw (Exception. "The provided swimlane does not exist.")))))
 
+
 ; ----- Test that the functions are working properly.
-(add-ticket "a fun new ticket" (str (java.time.LocalDateTime/now)) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
+(add-ticket "a fun new ticket" (current-time) "Alexander Maricich")
 (move-ticket "ticket-0" :in-progress)
+(move-ticket "ticket-1" :in-progress)
+(move-ticket "ticket-2" :in-progress)
+(move-ticket "ticket-3" :in-progress)
+(move-ticket "ticket-4" :in-progress)
+(move-ticket "ticket-5" :in-progress)
+(move-ticket "ticket-6" :complete)
 
 ; ----- Try to load the previous state if one exists.
 (load-state)
